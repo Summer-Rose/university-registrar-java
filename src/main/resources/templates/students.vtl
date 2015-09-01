@@ -1,0 +1,32 @@
+<h2 class="well">University epicodus = new University()</h2>
+
+<h3>Students</h3>
+<form action="/students/search">
+  <div class="form-group">
+      <label for="student_search">Seach Students</label>
+      <input type="text" name="student_search" id="student_search" placeholder="Ex. Jake Kaad">
+      <button type="submit" class="btn btn-info">Search</button>
+  </div>
+</form>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Student Name</th>
+      <th>Student ID</th>
+      <th>Enrollment Date</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    #foreach ($student in $students)
+      <tr>
+        <td>$student.getName()</td>
+        <td>$student.getId()</td>
+        <td>$student.getEnrollDate()</td>
+        <td>
+          <a href="/student/$student.getId()" class="btn btn-warning">View &amp; Update</a>
+        </td>
+      </tr>
+    #end
+  </tbody>
+</table>
