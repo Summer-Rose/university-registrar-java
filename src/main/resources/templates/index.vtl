@@ -1,120 +1,37 @@
-<h2 class="well">To Do List</h2>
+<h2 class="well">University epicodus = new University()</h2>
 
-<form action="/add-category" method="post" class="form-inline">
-  <div class="form-group">
-    <label for="category">Add Category:</label>
-    <input id="category" name="category" placeholder="Ex. Household Chores" required>
-  </div>
-  <button type="submit" class="btn btn-info">Add</button>
-</form>
-
-<hr>
-
-
-<form action="/add-task" method="post" class="form-inline">
-  <div class="form-group">
-    <label for="task">Add Task:</label>
-    <input id="task" name="task" placeholder="Ex. Buy groceries" required>
-  </div>
-  #if ($categories.size() > 0)
-    #foreach ($category in $categories)
-    <input type="checkbox" name="categories-$category.getId()" value="$category.getId()">$category.getName()
-    #end
-  </select>
-  #end
-  <button type="submit" class="btn btn-info">Add</button>
-</form>
-
-<hr>
-
-
-<div class="col-sm-2">
-  <form action="/" method="get">
-    <button type="submit" class="btn btn-info button-style btn-group-vertical" style="width: 100%;">View All Tasks</button>
-  </form>
-  #foreach ($category in $categories)
-    <form action="/category/$category.getId()" method="get">
-      <button type="submit" class="btn btn-warning button-style btn-group-vertical" style="width: 100%;">$category.getName()</button>
-  </form>
-  #end
-</div>
-
-#if ($tasks)
-<div class="col-sm-10">
-  <form action="/update/$category.getId()" method="post">
-    <div class="panel panel-default">
-      <div class="panel-heading"><strong>Tasks in $category.getName() Category</strong></div>
-        <table class="table table-striped">
-          <thead>
-            <tr>
-              <th>Task</th>
-              <th><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></th>
-              <th><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></th>
-            </tr>
-          </thead>
-          <tbody>
-            #foreach ($task in $tasks)
-              <tr>
-                #if ($task.getCompleted() == 1)
-                <td>$task.getDescription()</td>
-                #else
-                <td><strike>$task.getDescription()</strike></td>
-                #end
-                <td>
-                  #if ($task.getCompleted() == 1)
-                  <input type="checkbox" name="task-$task.getId()" value="task.getId()">
-                  #else
-                  <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                  #end
-                </td>
-                <td>
-                  <input type="checkbox" name="delete-$task.getId()" value="task.getId()">
-                </td>
-              </tr>
-            #end
-          </tbody>
-        </table>
-      </div>
-    <button type="submit" class="btn btn-danger" aria-label="Left Align"><span
-    class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Update Tasks in $category.getName()</button>
+<img src="/img/index-img.jpg">
+<!--Add Course Form-->
+<div class="col-md-6">
+  <form action="/courses" method="get">
+    <fieldset>
+      <legend>Add Course</legend>
+        <div class="form-group">
+          <label for="title">Course Title:</label>
+          <input type="text" id="title" name="title">
+        </div>
+        <div class="form-group">
+          <label for="course_number">Course Number:</label>
+          <input type="number" id="course_number" name="course_number">
+        </div>
+        <button type="submit" class="btn btn-info">Add Course</button>
+    </fieldset>
   </form>
 </div>
-
-
-#else
-<div class="col-sm-10">
-  <div class="panel panel-default">
-    <div class="panel-heading"><strong>All Tasks</strong></div>
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th>Task</th>
-            <th><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></th>
-            <th><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></th>
-          </tr>
-        </thead>
-        <tbody>
-          #foreach ($task in $tasksAll)
-            <tr>
-              #if ($task.getCompleted() == 1)
-              <td>$task.getDescription()</td>
-              #else
-              <td><strike>$task.getDescription()</strike></td>
-              #end
-              <td>
-                #if ($task.getCompleted() == 1)
-                <input type="checkbox" name="task-$task.getId()" value="task.getId()">
-                #else
-                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
-                #end
-              </td>
-              <td>
-                <input type="checkbox" name="delete-$task.getId()" value="task.getId()">
-              </td>
-            </tr>
-          #end
-        </tbody>
-      </table>
-    </div>
+<!--Add Student Form-->
+<div class="col-md-6">
+  <form action="/students" method="get">
+    <fieldset>
+      <legend>Add Student</legend>
+        <div class="form-group">
+          <label for="name">Student Name:</label>
+          <input type="text" id="name" name="name">
+        </div>
+        <div class="form-group">
+          <label for="enroll_date">Enrollment Date:</label>
+          <input type="text" id="enroll_date" name="enroll_date">
+        </div>
+        <button type="submit" class="btn btn-info">Add Student</button>
+    </fieldset>
+  </form>
 </div>
-#end
