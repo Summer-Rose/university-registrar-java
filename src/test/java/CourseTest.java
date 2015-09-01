@@ -69,4 +69,15 @@ public class CourseTest {
     assertEquals(myStudent.getCourses().size(), 0);
   }
 
+  @Test
+  public void removeStudent_removesStudentFromJoinTable() {
+    Course myCourse = new Course("Editorial Design", 101);
+    myCourse.save();
+    Student myStudent = new Student("David Carson", "9-12-2011");
+    myStudent.save();
+    myCourse.addStudent(myStudent);
+    myCourse.removeStudent(myStudent.getId());
+    assertFalse(myCourse.getStudents().contains("David Carson"));
+  }
+
 }
