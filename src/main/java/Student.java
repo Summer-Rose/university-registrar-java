@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Student {
   private int id;
   private String name;
+  private String enroll_date;
 
   public int getId() {
     return id;
@@ -15,8 +16,13 @@ public class Student {
     return name;
   }
 
-  public Student(String name) {
+  public String getEnrollDate() {
+    return enroll_date;
+  }
+
+  public Student(String name, String enroll_date) {
     this.name = name;
+    this.enroll_date = enroll_date;
   }
 
   @Override
@@ -31,7 +37,7 @@ public class Student {
   }
 
   public static List<Student> all() {
-    String sql = "SELECT id, name FROM students;";
+    String sql = "SELECT id, name, enroll_date FROM students;";
     try (Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Student.class);
     }
@@ -49,9 +55,10 @@ public class Student {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO students (name) VALUES (:name);";
+      String sql = "INSERT INTO students (name, enroll_date) VALUES (:name, :enroll_date);";
       this.id = (int) con.createQuery(sql, true)
       .addParameter("name", this.name)
+      .addParameter("enroll_date", this.enroll_date)
       .executeUpdate()
       .getKey();
     }
@@ -60,10 +67,10 @@ public class Student {
   public static Student find(int id) {
     try(Connection con = DB.sql2o.open()) {
       String sql = "SELECT * FROM students WHERE id=:id";
-      Student task = con.createQuery(sql)
+      Student student = con.createQuery(sql)
         .addParameter("id", id)
         .executeAndFetchFirst(Student.class);
-      return task;
+      return student;
     }
   }
 
@@ -106,5 +113,16 @@ public class Student {
         .addParameter("studentId", this.getId())
         .executeUpdate();
     }
+  }
+
+  public static List<Student> search(String searchName) {
+    String sql = "SELECT * FROM students WHERE name LIKE :'searchName%'";
+    List<Student> studentResults;
+    try (Connection con = DB.sql2o.open()) {
+      studentResults = con.createQuery(sql)
+        .addParameter("searchName", searchName)
+        .executeAndFetch(Student.class);
+    }
+    return studentResults;
   }
 }
