@@ -13,14 +13,14 @@ public class App {
     	staticFileLocation("/public");
     	String layout = "templates/layout.vtl";
 
-      get("/", (request, response) -> {
-       HashMap<String, Object> model = new HashMap<String, Object>();
-       model.put("template", "templates/index.vtl");
-       return new ModelAndView(model, layout);
-     }, new VelocityTemplateEngine());
+    get("/", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("template", "templates/index.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
 
-     get("/courses", (request, response) -> {
+    get("/courses", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String title = request.queryParams("title");
       int course_number = Integer.parseInt(request.queryParams("course_number"));
@@ -32,15 +32,33 @@ public class App {
     }, new VelocityTemplateEngine());
 
     get("/students", (request, response) -> {
-     HashMap<String, Object> model = new HashMap<String, Object>();
-     String name = request.queryParams("name");
-     String enroll_date = request.queryParams("enroll_date");
-     Student newStudent = new Student(name, enroll_date);
-     newStudent.save();
-     model.put("students", Student.all());
-     model.put("template", "templates/students.vtl");
-     return new ModelAndView(model, layout);
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String name = request.queryParams("name");
+      String enroll_date = request.queryParams("enroll_date");
+      Student newStudent = new Student(name, enroll_date);
+      newStudent.save();
+      model.put("students", Student.all());
+      model.put("template", "templates/students.vtl");
+      return new ModelAndView(model, layout);
    }, new VelocityTemplateEngine());
+
+    get("/students/search", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String student_search = request.queryParams("student_search");
+      List<Student> students = Student.search(student_search);
+      model.put("students", students);
+      model.put("template", "templates/students.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/student/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Integer studentId = Integer.parseInt(request.params(":id"));
+      Student student = Student.find(studentId);
+      model.put("student", student);
+      model.put("template", "templates/student-info.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
   }
 }
