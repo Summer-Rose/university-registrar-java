@@ -94,7 +94,7 @@ public class StudentTest {
   public void search_filtersStudentsByName() {
     Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
-    List searchResult = Student.search("Bart Simpson");
+    List searchResult = Student.search("B");
     assertTrue(myStudent.equals(searchResult.get(0)));
   }
 
