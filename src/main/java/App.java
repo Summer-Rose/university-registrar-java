@@ -13,5 +13,34 @@ public class App {
     	staticFileLocation("/public");
     	String layout = "templates/layout.vtl";
 
+      get("/", (request, response) -> {
+       HashMap<String, Object> model = new HashMap<String, Object>();
+       model.put("template", "templates/index.vtl");
+       return new ModelAndView(model, layout);
+     }, new VelocityTemplateEngine());
+
+
+     get("/courses", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      String title = request.queryParams("title");
+      int course_number = Integer.parseInt(request.queryParams("course_number"));
+      Course newCourse = new Course(title, course_number);
+      newCourse.save();
+      model.put("courses", Course.all());
+      model.put("template", "templates/courses.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    get("/students", (request, response) -> {
+     HashMap<String, Object> model = new HashMap<String, Object>();
+     String name = request.queryParams("name");
+     String enroll_date = request.queryParams("enroll_date");
+     Student newStudent = new Student(name, enroll_date);
+     newStudent.save();
+     model.put("students", Student.all());
+     model.put("template", "templates/students.vtl");
+     return new ModelAndView(model, layout);
+   }, new VelocityTemplateEngine());
+
   }
 }
