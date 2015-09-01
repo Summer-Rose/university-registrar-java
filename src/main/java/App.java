@@ -19,17 +19,22 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
-
     get("/courses", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      model.put("courses", Course.all());
+      model.put("template", "templates/courses.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
+
+    post("/courses", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String title = request.queryParams("title");
       int course_number = Integer.parseInt(request.queryParams("course_number"));
       Course newCourse = new Course(title, course_number);
       newCourse.save();
-      model.put("courses", Course.all());
-      model.put("template", "templates/courses.vtl");
+      response.redirect("/courses");
       return new ModelAndView(model, layout);
-    }, new VelocityTemplateEngine());
+    });
 
     get("/students", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -56,9 +61,27 @@ public class App {
       Integer studentId = Integer.parseInt(request.params(":id"));
       Student student = Student.find(studentId);
       model.put("student", student);
+      model.put("studentsCourses", student.getCourses());
+      model.put("courses", Course.all());
       model.put("template", "templates/student-info.vtl");
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
+
+    post("/student/:id/addcourse", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+
+      int courseId = Integer.parseInt(request.queryParams("course"));
+      Course addedCourse = Course.find(courseId);
+      Integer studentId = Integer.parseInt(request.params(":id"));
+      Student student = Student.find(studentId);
+      student.addCourse(addedCourse);
+
+      System.out.println(addedCourse.getTitle());
+      System.out.println(student.getId());
+
+      response.redirect("/student/" + studentId);
+      return new ModelAndView(model, layout);
+    });
 
   }
 }
