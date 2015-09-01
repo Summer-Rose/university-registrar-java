@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Course {
   private int id;
   private String title;
+  private int course_number;
 
   public int getId() {
     return id;
@@ -15,12 +16,17 @@ public class Course {
     return title;
   }
 
-  public Course(String title) {
+  public int getCourseNumber() {
+    return course_number;
+  }
+
+  public Course(String title, int course_number) {
     this.title = title;
+    this.course_number = course_number;
   }
 
   public static List<Course> all() {
-    String sql = "SELECT id, title FROM courses";
+    String sql = "SELECT id, title, course_number FROM courses";
     try(Connection con = DB.sql2o.open()) {
       return con.createQuery(sql).executeAndFetch(Course.class);
     }
@@ -38,9 +44,10 @@ public class Course {
 
   public void save() {
     try(Connection con = DB.sql2o.open()) {
-      String sql = "INSERT INTO courses (title) VALUES (:title)";
+      String sql = "INSERT INTO courses (title, course_number) VALUES (:title, :course_number)";
       this.id = (int) con.createQuery(sql, true)
         .addParameter("title", this.title)
+        .addParameter("course_number", course_number)
         .executeUpdate()
         .getKey();
     }
