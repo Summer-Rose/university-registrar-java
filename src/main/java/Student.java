@@ -116,11 +116,10 @@ public class Student {
   }
 
   public static List<Student> search(String searchName) {
-    String sql = "SELECT * FROM students WHERE name LIKE :'searchName%'";
+    String sql = "SELECT * FROM students WHERE name LIKE '%" + searchName + "%'";
     List<Student> studentResults;
     try (Connection con = DB.sql2o.open()) {
       studentResults = con.createQuery(sql)
-        .addParameter("searchName", searchName)
         .executeAndFetch(Student.class);
     }
     return studentResults;
