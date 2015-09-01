@@ -36,16 +36,23 @@ public class App {
       return new ModelAndView(model, layout);
     });
 
-    get("/students", (request, response) -> {
+    post("/students", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
       String name = request.queryParams("name");
       String enroll_date = request.queryParams("enroll_date");
       Student newStudent = new Student(name, enroll_date);
       newStudent.save();
-      model.put("students", Student.all());
-      model.put("template", "templates/students.vtl");
-      return new ModelAndView(model, layout);
-   }, new VelocityTemplateEngine());
+      response.redirect("/students");
+      return null;
+   });
+
+   get("/students", (request, response) -> {
+     HashMap<String, Object> model = new HashMap<String, Object>();
+     model.put("students", Student.all());
+     model.put("template", "templates/students.vtl");
+     return new ModelAndView(model, layout);
+  }, new VelocityTemplateEngine());
+
 
     get("/students/search", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
@@ -67,21 +74,35 @@ public class App {
       return new ModelAndView(model, layout);
     }, new VelocityTemplateEngine());
 
+    get("/delete/student/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      int studentId = Integer.parseInt(request.params(":id"));
+      Student deleteStudent = Student.find(studentId);
+      deleteStudent.delete();
+      response.redirect("/students");
+      return null;
+    });
+
     post("/student/:id/addcourse", (request, response) -> {
       HashMap<String, Object> model = new HashMap<String, Object>();
-
       int courseId = Integer.parseInt(request.queryParams("course"));
       Course addedCourse = Course.find(courseId);
       Integer studentId = Integer.parseInt(request.params(":id"));
       Student student = Student.find(studentId);
       student.addCourse(addedCourse);
-
-      System.out.println(addedCourse.getTitle());
-      System.out.println(student.getId());
-
       response.redirect("/student/" + studentId);
-      return new ModelAndView(model, layout);
+      return null;
     });
+
+    get("/course/:id", (request, response) -> {
+      HashMap<String, Object> model = new HashMap<String, Object>();
+      Integer courseId = Integer.parseInt(request.params(":id"));
+      Course course = Course.find(courseId);
+      model.put("course", course);
+      model.put("students", course.getStudents());
+      model.put("template", "templates/course-info.vtl");
+      return new ModelAndView(model, layout);
+    }, new VelocityTemplateEngine());
 
   }
 }
