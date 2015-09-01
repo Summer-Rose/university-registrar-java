@@ -18,21 +18,21 @@ public class StudentTest {
 
   @Test
   public void equals_returnsTrueIfNamesAreTheSame() {
-    Student firstStudent = new Student("Bart Simpson");
-    Student secondStudent = new Student("Bart Simpson");
+    Student firstStudent = new Student("Bart Simpson", "9-12-2011");
+    Student secondStudent = new Student("Bart Simpson", "9-12-2011");
     assertTrue(firstStudent.equals(secondStudent));
   }
 
   @Test
   public void save_savesObjectIntoDatabase() {
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     assertTrue(Student.all().get(0).equals(myStudent));
   }
 
   @Test
   public void save_assignsIdToObject() {
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     Student savedStudent = Student.all().get(0);
     assertEquals(myStudent.getId(), savedStudent.getId());
@@ -40,7 +40,7 @@ public class StudentTest {
 
   @Test
   public void find_findsStudentInDatabase_true() {
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     Student savedStudent = Student.find(myStudent.getId());
     assertTrue(myStudent.equals(savedStudent));
@@ -48,9 +48,9 @@ public class StudentTest {
 
   @Test
   public void addCourse_addsCourseToStudent() {
-    Course myCourse = new Course("Architecture 101");
+    Course myCourse = new Course("Architecture", 101);
     myCourse.save();
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     myStudent.addCourse(myCourse);
     Course savedCourse = myStudent.getCourses().get(0);
@@ -59,9 +59,9 @@ public class StudentTest {
 
   @Test
   public void getCourses_returnAllCourses_ArrayList() {
-    Course myCourse = new Course("Architecture 101");
+    Course myCourse = new Course("Architecture", 101);
     myCourse.save();
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     myStudent.addCourse(myCourse);
     List savedCourses = myStudent.getCourses();
@@ -70,9 +70,9 @@ public class StudentTest {
 
   @Test
   public void delete_deletesAllStudentsAndListAssociations() {
-    Course myCourse = new Course("Architecture 101");
+    Course myCourse = new Course("Architecture", 101);
     myCourse.save();
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
     myStudent.addCourse(myCourse);
     myStudent.delete();
@@ -80,24 +80,22 @@ public class StudentTest {
   }
 
   @Test
-  public void remove_removesStudentById_true() {
-    Course myCourse = new Course("Architecture 101");
+  public void edit_newStudentName() {
+    Course myCourse = new Course("Architecture", 101);
     myCourse.save();
-    Student myStudent = new Student("Bart Simpson");
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
-    Student.removeStudentById(myStudent.getId());
-    assertTrue(Student.all().size() == 0);
+    Student editStudent = new Student("Lisa Simpson", "9-12-2012");
+    myStudent.editStudent(editStudent.getId(), editStudent.getName());
+    assertTrue(editStudent.getName() == "Lisa Simpson");
   }
 
   @Test
-  public void edit_newStudentName() {
-    Course myCourse = new Course("Architecture 101");
-    myCourse.save();
-    Student myStudent = new Student("Bart Simpson");
+  public void search_filtersStudentsByName() {
+    Student myStudent = new Student("Bart Simpson", "9-12-2011");
     myStudent.save();
-    Student editStudent = new Student("Lisa Simpson");
-    myStudent.editStudent(editStudent.getId(), editStudent.getName());
-    assertTrue(editStudent.getName() == "Lisa Simpson");
+    List searchResult = Student.search("Bart Simpson");
+    assertTrue(myStudent.equals(searchResult.get(0)));
   }
 
 }
