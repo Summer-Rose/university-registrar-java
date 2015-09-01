@@ -28,6 +28,7 @@
 </nav>
 
 <h3>$course.getTitle() $course.getCourseNumber()</h3>
+<a href="/delete/course/$course.getId()" class="btn btn-danger">Delete Course</a>
 
 <table class="table table-striped">
   <thead>
@@ -42,7 +43,7 @@
         <td><a href="/student/$student.getId()">$student.getName()</a></td>
         <td>$student.getId()</td>
         <td>
-          <a href="/" class="btn btn-warning">Remove Student</a>
+          <a href="/remove/student/$student.getId()/course/$course.getId()" class="btn btn-warning">Remove Student</a>
         </td>
       </tr>
       #end
