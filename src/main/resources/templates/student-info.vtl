@@ -42,10 +42,10 @@
   <tbody>
       #foreach ($course in $studentsCourses)
       <tr>
-        <td>$course.getTitle()</td>
+        <td><a href="/course/$course.getId()">$course.getTitle()</a></td>
         <td>$course.getCourseNumber()</td>
         <td>
-          <a href="/" method="post" class="btn btn-warning">Remove Student from Course</a>
+          <a href="/remove/student/$student.getId()/course/$course.getId()" method="post" class="btn btn-warning">Remove Student from Course</a>
         </td>
       </tr>
       #end
