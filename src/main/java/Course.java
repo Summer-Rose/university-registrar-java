@@ -107,11 +107,13 @@ public class Course {
     }
   }
 
-  public void removeStudent(int id) {
+  public void removeStudent(int student_id) {
+    System.out.println(id + "");
     try (Connection con = DB.sql2o.open()) {
-      String removeStudentQuery = "DELETE FROM courses_students_professors WHERE student_id = :student_id";
+      String removeStudentQuery = "DELETE FROM courses_students_professors WHERE student_id = :student_id AND course_id = :id";
       con.createQuery(removeStudentQuery)
-        .addParameter("student_id", id)
+        .addParameter("student_id", student_id)
+        .addParameter("id", id)
         .executeUpdate();
       }
   }
