@@ -16,21 +16,21 @@ public class CourseTest {
 
   @Test
   public void equals_returnsTrueIfTitlesAreTheSame() {
-    Course firstCourse = new Course("Human Sexuality 101");
-    Course secondCourse = new Course("Human Sexuality 101");
+    Course firstCourse = new Course("Human Sexuality", 101);
+    Course secondCourse = new Course("Human Sexuality", 101);
     assertTrue(firstCourse.equals(secondCourse));
   }
 
   @Test
   public void save_savesIntoDatabase_true() {
-    Course myCourse = new Course("Human Sexuality 101");
+    Course myCourse = new Course("Human Sexuality", 101);
     myCourse.save();
     assertTrue(Course.all().get(0).equals(myCourse));
   }
 
   @Test
   public void find_findCourseInDatabase_true() {
-    Course myCourse = new Course("Human Sexuality 101");
+    Course myCourse = new Course("Human Sexuality", 101);
     myCourse.save();
     Course savedCourse = Course.find(myCourse.getId());
     assertTrue(myCourse.equals(savedCourse));
@@ -38,9 +38,9 @@ public class CourseTest {
 
   @Test
   public void addStudent_addsStudentToCourse() {
-    Course myCourse = new Course("Human Sexuality 101");
+    Course myCourse = new Course("Human Sexuality", 101);
     myCourse.save();
-    Student myStudent = new Student("Kristen Wiig");
+    Student myStudent = new Student("Kristen Wiig", "9-12-2011");
     myStudent.save();
     myCourse.addStudent(myStudent);
     Student savedStudent = myCourse.getStudents().get(0);
@@ -49,9 +49,9 @@ public class CourseTest {
 
   @Test
   public void getStudents_returnsAllStudents_ArrayList() {
-    Course myCourse = new Course("Universal Syntax 416");
+    Course myCourse = new Course("Universal Syntax", 101);
     myCourse.save();
-    Student myStudent = new Student("Louis CK");
+    Student myStudent = new Student("Louis CK", "9-12-2011");
     myStudent.save();
     myCourse.addStudent(myStudent);
     List savedStudents = myCourse.getStudents();
@@ -60,9 +60,9 @@ public class CourseTest {
 
   @Test
   public void delete_deletesAllStudentAndListAssociations() {
-    Course myCourse = new Course("Editorial Design 214");
+    Course myCourse = new Course("Editorial Design", 101);
     myCourse.save();
-    Student myStudent = new Student("David Carson");
+    Student myStudent = new Student("David Carson", "9-12-2011");
     myStudent.save();
     myCourse.addStudent(myStudent);
     myCourse.delete();
