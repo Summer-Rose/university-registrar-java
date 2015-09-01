@@ -1,0 +1,23 @@
+<h2 class="well">University epicodus = new University()</h2>
+
+<h3>Courses</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Course Title</th>
+      <th>Course Number</th>
+      <th>Update</th>
+    </tr>
+  </thead>
+  <tbody>
+    #foreach ($course in $courses)
+      <tr>
+        <td>$course.getTitle()</td>
+        <td>$course.getCourseNumber()</td>
+        <td>
+          <a href="/" class="btn btn-warning">Update</a>
+        </td>
+      </tr>
+    #end
+  </tbody>
+</table>
